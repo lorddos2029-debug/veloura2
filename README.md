@@ -18,10 +18,27 @@ O checkout está em `checkout/index.html`, com CSS e JavaScript incorporados e T
 
 UTMs, cookies `_fbp`/`_fbc` e o identificador de evento são enviados à UrusPay. O Pixel de navegador, se configurado, usa o mesmo evento na confirmação de pagamento. Configure Pixel, CAPI e UTMify no painel UrusPay conforme a documentação do provedor.
 
-Os pedidos ficam em `.runtime/`, incluindo os dados de entrega e o identificador de cobrança. Esse diretório e `.env` são privados e ignorados pelo Git. Use armazenamento persistente protegido para `.runtime` em produção, uma única instância de Node, HTTPS e backups privados. O estado é confirmado por consulta ao provedor; não há webhook implementado.
+Os pedidos ficam em `.runtime/`, incluindo os dados de entrega e o identificador de cobrança. Esse diretório e `.env` são privados e ignorados pelo Git. Em servidores Node tradicionais, use armazenamento persistente protegido para `.runtime`, uma única instância e HTTPS. Na Vercel, use Redis conforme as instruções abaixo. O estado é confirmado por consulta ao provedor; não há webhook implementado.
 
 Em falha de resposta ao criar cobrança, o pedido fica marcado como incerto e novas tentativas com o mesmo evento não criam outra cobrança. Consulte o painel UrusPay antes de tentar novamente. Os tamanhos e a composição precisam de confirmação com o fornecedor.
 
 ## Verificação
 
 `npm run check` verifica a sintaxe. A integração foi testada com respostas simuladas, sem gerar cobrança real. A confirmação real depende da disponibilidade e das permissões da conta UrusPay.
+
+## Deploy na Vercel
+
+O `vercel.json` define build estático (`node build.cjs`, saída `public`) e a função Node `api/index.js`. A loja e o checkout não dependem da execução da API para abrir. Não use `npm start` como comando de build.
+
+Em Settings → Environment Variables, configure para Production:
+
+- `URUSPAY_API_KEY`: chave UrusPay.
+- `UPSTASH_REDIS_REST_URL`: URL REST de uma base Upstash Redis.
+- `UPSTASH_REDIS_REST_TOKEN`: token REST com permissão de leitura e escrita.
+
+Uma integração Upstash no Vercel Marketplace pode preencher essas variáveis. Os nomes alternativos `KV_REST_API_URL` e `KV_REST_API_TOKEN` também são aceitos. Redis armazena pedidos e endereços de entrega; mantenha a base privada. Não use um token somente de leitura.
+
+Faça Redeploy após configurar as variáveis. Não configure `STOREFRONT_ROOT` na Vercel.
+
+Na Vercel não há gravação no filesystem: os pedidos ficam no Redis e a criação usa reserva atômica para impedir cobranças simultâneas do mesmo evento. Sem Redis, a API responde com erro amigável de configuração, sem derrubar a página. Localmente, sem Redis, permanece o armazenamento privado em `.runtime`.
+

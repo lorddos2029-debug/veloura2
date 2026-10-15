@@ -1,0 +1,1 @@
+{"framework":null,"buildCommand":"node build.cjs","outputDirectory":"public","functions":{"api/index.js":{"maxDuration":60}},"rewrites":[{"source":"/api/pix/:route*","destination":"/api/index?route=:route*"},{"source":"/checkout","destination":"/checkout/index.html"},{"source":"/checkout/","destination":"/checkout/index.html"}]}
