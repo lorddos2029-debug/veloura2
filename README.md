@@ -37,6 +37,9 @@ UTMify foi validada com isTest:true, sem cadastrar vendas fictícias. Meta Purch
 
 ## Local
 
-Node.js 18+. Copie `.env.example` para `.env`, informe as credenciais e execute `npm start`. Não há dependências para instalar. `npm run check` valida sintaxe e `npm test` executa testes de rastreamento.
+Node.js 18+. Copie `.env.example` para `.env`, informe as credenciais e execute `npm ci` e depois `npm start`. `npm run check` valida sintaxe e `npm test` executa testes de rastreamento.
 
 Cartão não está integrado. A opção selecionável informa indisponibilidade e orienta o uso do Pix. Tamanhos, medidas e composição devem ser confirmados com o fornecedor.
+
+O QR Code pode ser gerado no servidor a partir do Pix copia e cola já recebido, sem criar nova cobrança. A validação aceita resposta estruturada e confirma o valor pela consulta da UrusPay se ele estiver ausente na criação.
+
