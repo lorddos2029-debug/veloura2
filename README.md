@@ -43,3 +43,7 @@ Cartão não está integrado. A opção selecionável informa indisponibilidade 
 
 O QR Code pode ser gerado no servidor a partir do Pix copia e cola já recebido, sem criar nova cobrança. A validação aceita resposta estruturada e confirma o valor pela consulta da UrusPay se ele estiver ausente na criação.
 
+
+## Kit facial
+
+A rota `/kit/` apresenta o Kit Clareador Facial com protetor solar FPS70 50g, sérum multicorretivo 30ml e sabonete facial 120ml. Opções: 1 Kit R$59,90; 2 Kits R$79,90; 3 Kits R$97,90. A seleção altera foto e preço. O catálogo compartilhado permite calça e kit na mesma sacola; API e rastreamento usam o produto e a variante correspondentes. O desconto Pix de 5% permanece aplicado aos produtos, separado do frete. Os textos se baseiam nos nomes e rótulos fornecidos, sem prometer resultado individual.

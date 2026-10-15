@@ -27,6 +27,14 @@
     {
       "source": "/pix/",
       "destination": "/pix/index.html"
+    },
+    {
+      "source": "/kit",
+      "destination": "/kit/index.html"
+    },
+    {
+      "source": "/kit/",
+      "destination": "/kit/index.html"
     }
   ]
 }
