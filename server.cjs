@@ -5,8 +5,11 @@ function validCPF(value){const s=String(value||'').replace(/\D/g,'');if(s.length
 function createApp({root=__dirname,apiKey='',fetchImpl=fetch,dataDir=path.join(__dirname,'.runtime')}={}){
 
  root=path.resolve(root);
- const redisURL=process.env.UPSTASH_REDIS_REST_URL||process.env.KV_REST_API_URL;
- const redisToken=process.env.UPSTASH_REDIS_REST_TOKEN||process.env.KV_REST_API_TOKEN;
+ const cleanEnv=name=>String(process.env[name]||'').trim().replace(/^['"]|['"]$/g,'');
+ const redisPairs=[['UPSTASH_REDIS_REST_URL','UPSTASH_REDIS_REST_TOKEN'],['KV_REST_API_URL','KV_REST_API_TOKEN']];
+ for(const name of Object.keys(process.env).sort()){if(name.endsWith('_KV_REST_API_URL'))redisPairs.push([name,name.replace(/_URL$/,'_TOKEN')]);if(name.endsWith('_UPSTASH_REDIS_REST_URL'))redisPairs.push([name,name.replace(/_URL$/,'_TOKEN')])}
+ const pair=redisPairs.find(([url,token])=>cleanEnv(url)&&cleanEnv(token))||redisPairs[0];
+ const redisURL=cleanEnv(pair[0]);const redisToken=cleanEnv(pair[1]);
  const cloud=process.env.VERCEL==='1';
  const orders=new Map();
  if(!cloud&&!redisURL){fs.mkdirSync(dataDir,{recursive:true});for(const name of fs.readdirSync(dataDir).filter(n=>n.endsWith('.json'))){try{const o=JSON.parse(fs.readFileSync(path.join(dataDir,name),'utf8'));orders.set(o.evento_id,o)}catch{}}}
@@ -23,7 +26,7 @@ function createApp({root=__dirname,apiKey='',fetchImpl=fetch,dataDir=path.join(_
  return http.createServer(async(req,res)=>{try{
  const url=new URL(req.url,'http://localhost');const pathname=decodeURIComponent(url.pathname);
  if(pathname.startsWith('/api/')){
- if(cloud&&(!redisURL||!redisToken))return json(res,503,{error:'O armazenamento dos pedidos ainda não foi configurado. Entre em contato com a loja.'});
+ if(cloud&&(!redisURL||!redisToken))return json(res,503,{error:'O Redis não está disponível neste deployment. Configure UPSTASH_REDIS_REST_URL e UPSTASH_REDIS_REST_TOKEN (ou KV_REST_API_URL e KV_REST_API_TOKEN) em Production e faça Redeploy.',code:'REDIS_ENV_MISSING'});
  if(!apiKey)return json(res,503,{error:'O pagamento Pix ainda não foi configurado. Entre em contato com a loja.'});
  if(req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host)return json(res,403,{error:'Origem não permitida.'});
  if(req.method==='POST'&&pathname==='/api/pix/charge'){
