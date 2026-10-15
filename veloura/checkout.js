@@ -39,3 +39,5 @@ try{const saved=JSON.parse(sessionStorage.getItem('veloura-pix')||'null');if(sav
  select();
  const observer=new MutationObserver(()=>{if(!document.getElementById('pixPanel').hidden||!document.getElementById('paidPanel').hidden){document.querySelectorAll('[name=method]').forEach(r=>r.disabled=true)}});observer.observe(document.getElementById('pixPanel'),{attributes:true,attributeFilter:['hidden']});observer.observe(document.getElementById('paidPanel'),{attributes:true,attributeFilter:['hidden']});
 })();
+
+(function separatePixPage(){const inlineShowPix=showPix;showPix=function(data){try{sessionStorage.setItem('veloura-pix',JSON.stringify(data));if(pollTimer)clearInterval(pollTimer);location.assign('/pix/')}catch{inlineShowPix(data)}};if(pixCharge)showPix(pixCharge)})();
