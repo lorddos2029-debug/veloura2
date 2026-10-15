@@ -13,3 +13,5 @@ $('addToBag').onclick=()=>{if(!size){$('selectionMessage').textContent='Selecion
 
 
 document.querySelectorAll('[data-review-photo]').forEach(b=>b.onclick=()=>{$('zoomPhoto').src=b.dataset.reviewPhoto;$('zoomPhoto').alt=b.querySelector('img').alt;$('photoDialog').showModal()});
+// Preserve attribution when navigating from the product page to checkout.
+try{const keys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','fbclid'];const params=new URLSearchParams(location.search);const saved=JSON.parse(sessionStorage.getItem('veloura-attribution')||'{}');for(const key of keys)if(params.has(key))saved[key]=params.get(key);sessionStorage.setItem('veloura-attribution',JSON.stringify(saved))}catch{}

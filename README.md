@@ -1,35 +1,27 @@
 # Veloura
 
-Loja estática da Veloura com a Calça Pool Jeans barrel cintura média feminina por R$59,90.
+Loja Veloura com a Calça Pool Jeans barrel por R$59,90, galeria, avaliações e checkout com Pix UrusPay.
 
 ## Executar
 
-Requer Node.js 18 ou superior. Não há dependências para instalar.
+Requer Node.js 18 ou superior, sem dependências para instalar.
 
-```sh
-npm start
-```
+1. Copie `.env.example` para `.env`.
+2. Defina `URUSPAY_API_KEY` com sua chave UrusPay no `.env` ou no ambiente de hospedagem.
+3. Execute `npm start` e acesse http://localhost:3000.
 
-Acesse http://localhost:3000. A variável `PORT` permite escolher outra porta.
+`PORT` permite escolher outra porta. O checkout precisa do servidor Node; hospedagem exclusivamente estática não processa Pix.
 
-## Recursos
+## Pagamento
 
-- Cinco cores, galeria de imagens e ampliação das fotos.
-- Seleção de tamanho e sacola persistida no navegador.
-- Checkout em três etapas: identificação, entrega e pagamento.
-- Frete grátis (7–10 dias) ou Sedex (3–5 dias, R$13,90), com atualização do total.
-- Seis avaliações com fotos fornecidas para o projeto.
-- Layout responsivo e identidade Veloura.
+O checkout está em `checkout/index.html`, com CSS e JavaScript incorporados e Tailwind via CDN. O navegador chama `/api/pix/charge` e consulta o endereço local de status retornado a cada 5 segundos. O servidor autentica na UrusPay sem revelar a chave, valida CPF, itens e endereço e calcula preços e frete. Frete grátis: 7–10 dias. Sedex: 3–5 dias, R$13,90. Cartão não está integrado.
 
-## Estado da integração
+UTMs, cookies `_fbp`/`_fbc` e o identificador de evento são enviados à UrusPay. O Pixel de navegador, se configurado, usa o mesmo evento na confirmação de pagamento. Configure Pixel, CAPI e UTMify no painel UrusPay conforme a documentação do provedor.
 
-O checkout é uma prévia: nenhum pedido ou cobrança é criado. Dados pessoais permanecem somente na página e não são enviados nem persistidos. Pix, cartão, estoque e logística precisam de integração antes de operar vendas. Os tamanhos 34 a 46 e as medidas devem ser confirmados com o fornecedor.
+Os pedidos ficam em `.runtime/`, incluindo os dados de entrega e o identificador de cobrança. Esse diretório e `.env` são privados e ignorados pelo Git. Use armazenamento persistente protegido para `.runtime` em produção, uma única instância de Node, HTTPS e backups privados. O estado é confirmado por consulta ao provedor; não há webhook implementado.
 
-## Arquivos
+Em falha de resposta ao criar cobrança, o pedido fica marcado como incerto e novas tentativas com o mesmo evento não criam outra cobrança. Consulte o painel UrusPay antes de tentar novamente. Os tamanhos e a composição precisam de confirmação com o fornecedor.
 
-- `index.html`: página do produto.
-- `veloura/`: estilos, scripts e imagens.
-- `checkout/index.html`: checkout.
-- `server.cjs`: servidor local sem dependências.
+## Verificação
 
-Para hospedagem estática, publique a raiz do projeto e habilite diretórios com `index.html` para `/checkout/`.
+`npm run check` verifica a sintaxe. A integração foi testada com respostas simuladas, sem gerar cobrança real. A confirmação real depende da disponibilidade e das permissões da conta UrusPay.
