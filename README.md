@@ -42,3 +42,19 @@ Faça Redeploy após configurar as variáveis. Não configure `STOREFRONT_ROOT` 
 
 Na Vercel não há gravação no filesystem: os pedidos ficam no Redis e a criação usa reserva atômica para impedir cobranças simultâneas do mesmo evento. Sem Redis, a API responde com erro amigável de configuração, sem derrubar a página. Localmente, sem Redis, permanece o armazenamento privado em `.runtime`.
 
+
+## UTMify e Facebook
+
+Variáveis adicionais na Vercel: `UTMIFY_API_TOKEN`, `META_ACCESS_TOKEN` e `META_PIXEL_ID=1197640555599515`. `META_GRAPH_VERSION` é opcional (padrão v25.0). Nunca exponha tokens no HTML.
+
+O Pixel do navegador e o script oficial de UTMs da UTMify estão na loja e no checkout; não são carregados no localhost para evitar poluir relatórios. O script ofuscado fornecido foi substituído pelo carregamento equivalente legível.
+
+Pix gerado envia waiting_payment e Pix confirmado envia paid com o mesmo orderId e createdAt. Valores em centavos incluem o frete. GATEWAY_FEE_CENTS permite definir uma taxa fixa conhecida; por padrão é zero, pois não foi fornecida uma tarifa. A comissão padrão corresponde ao valor bruto.
+
+Meta Purchase só é enviado após pagamento confirmado, com email e telefone normalizados e SHA-256. O event_id é compartilhado com o Pixel do navegador. Redis registra envios e bloqueia concorrência. Erros de rastreamento não bloqueiam pagamentos; novas consultas tentam novamente.
+
+Quando a UrusPay informa rastreamento nativo enviado/configurado, o canal permanece sob responsabilidade dela para evitar duplicação. Confirme no painel que o destino nativo corresponde à conta/pixel desejados ou desative a integração nativa para usar os tokens desta aplicação.
+
+O webhook de pagamento usa identificador aleatório e sempre consulta a UrusPay antes de confirmar: não confia no conteúdo recebido. A entrega do callback depende do provedor. A consulta no navegador continua como alternativa.
+
+UTMify waiting_payment e paid foram aceitos pela API real com isTest:true, sem salvar vendas. Meta Purchase foi testado com respostas simuladas, sem criar conversões fictícias. Execute npm test para validar os payloads e a deduplicação.
