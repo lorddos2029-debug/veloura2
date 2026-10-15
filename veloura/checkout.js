@@ -27,3 +27,15 @@ try{const saved=JSON.parse(sessionStorage.getItem('veloura-pix')||'null');if(sav
  finally{if(request===sequence){clearTimeout(timer);form.removeAttribute('aria-busy')}}}
  cep.addEventListener('input',onCEP);cep.addEventListener('blur',()=>{if(current.length!==8&&current.length)cep.setCustomValidity('Informe um CEP com 8 dígitos.')});showShipping(false);if(cep.value)onCEP();
 })();
+
+(function paymentMethods(){
+ const choices=document.querySelector('.methods');
+ if(!choices)return;
+ const button=document.getElementById('finish');const generatePix=button.onclick;
+ const notice=document.querySelector('#payment .notice');
+ function select(){const card=document.querySelector('[name=method]:checked').value==='card';document.querySelectorAll('.methodChoice').forEach(el=>el.classList.toggle('selected',el.querySelector('input').checked));document.getElementById('paymentDescription').textContent=card?'Cartão de crédito ainda não está disponível. Selecione Pix para concluir seu pagamento.':'Gere seu Pix e pague pelo aplicativo do seu banco. A confirmação aparece automaticamente nesta página.';button.disabled=card;button.textContent=card?'CARTÃO INDISPONÍVEL':'GERAR PIX';notice.textContent=card?'A cobrança por cartão ainda não está integrada. Nenhum dado de cartão será solicitado.':'Ao gerar o Pix, os dados de identificação e da compra são enviados à UrusPay para processar o pagamento.';document.getElementById('paymentStatus').textContent=''}
+ document.querySelectorAll('[name=method]').forEach(r=>r.onchange=select);
+ button.onclick=()=>{if(document.querySelector('[name=method]:checked').value!=='pix')return;return generatePix()};
+ select();
+ const observer=new MutationObserver(()=>{if(!document.getElementById('pixPanel').hidden||!document.getElementById('paidPanel').hidden){document.querySelectorAll('[name=method]').forEach(r=>r.disabled=true)}});observer.observe(document.getElementById('pixPanel'),{attributes:true,attributeFilter:['hidden']});observer.observe(document.getElementById('paidPanel'),{attributes:true,attributeFilter:['hidden']});
+})();
