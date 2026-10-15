@@ -41,3 +41,5 @@ try{const saved=JSON.parse(sessionStorage.getItem('veloura-pix')||'null');if(sav
 })();
 
 (function separatePixPage(){const inlineShowPix=showPix;showPix=function(data){try{sessionStorage.setItem('veloura-pix',JSON.stringify(data));if(pollTimer)clearInterval(pollTimer);location.assign('/pix/')}catch{inlineShowPix(data)}};if(pixCharge)showPix(pixCharge)})();
+
+(function trackCheckoutEntry(){if(typeof window.fbq!=='function')return;window.fbq('track','InitiateCheckout',{currency:'BRL',value:Number(total.toFixed(2)),content_type:'product',content_ids:items.map(item=>'barrel-'+item.color+'-'+item.size),contents:items.map(item=>({id:'barrel-'+item.color+'-'+item.size,quantity:item.qty,item_price:59.9})),num_items:items.reduce((quantity,item)=>quantity+item.qty,0)},{eventID:'ic_'+crypto.randomUUID()});})();
