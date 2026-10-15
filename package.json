@@ -1,0 +1,1 @@
+{"name":"veloura","version":"1.0.0","private":true,"description":"Loja Veloura — calça Pool Jeans barrel","scripts":{"start":"node server.cjs","check":"node --check server.cjs && node --check veloura/store.js && node --check veloura/checkout.js"},"engines":{"node":">=18"}}
