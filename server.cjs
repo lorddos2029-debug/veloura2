@@ -33,7 +33,16 @@ function createApp({root=__dirname,apiKey='',fetchImpl=fetch,dataDir=path.join(_
  if(!apiKey)return json(res,503,{error:'O pagamento Pix ainda não foi configurado. Entre em contato com a loja.'});
  if(req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host)return json(res,403,{error:'Origem não permitida.'});
  if(req.method==='POST'&&pathname==='/api/pix/charge'){
- let raw=req.body?JSON.stringify(req.body):'';for await(const chunk of req){raw+=chunk;if(raw.length>24000)return json(res,413,{error:'Dados excedem o tamanho permitido.'})}let b;try{b=JSON.parse(raw)}catch{return json(res,400,{error:'Dados inválidos.'})}
+ let b;try{
+ if(req.body!==undefined&&req.body!==null){
+  if(Buffer.isBuffer(req.body))b=JSON.parse(req.body.toString('utf8'));
+  else if(typeof req.body==='string')b=JSON.parse(req.body);
+  else if(typeof req.body==='object')b=req.body;
+  else throw Error('INVALID_BODY');
+ }else{let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>24000)return json(res,413,{error:'Dados excedem o tamanho permitido.'})}b=JSON.parse(raw)}
+ if(!b||Array.isArray(b)||typeof b!=='object')throw Error('INVALID_BODY');
+ if(Buffer.byteLength(JSON.stringify(b))>24000)return json(res,413,{error:'Dados excedem o tamanho permitido.'});
+ }catch{return json(res,400,{error:'Dados inválidos. Atualize a página e tente novamente.'})}
  if(!validCPF(b.cpf)||typeof b.nome!=='string'||b.nome.trim().length<3||b.nome.length>160||!/^\S+@\S+\.\S+$/.test(b.email||'')||String(b.email).length>200||!/^ev_[a-zA-Z0-9_-]{10,100}$/.test(b.evento_id||''))return json(res,400,{error:'Confira nome, e-mail e CPF.'});
  if(!Array.isArray(b.cart)||!b.cart.length||b.cart.length>35||!['free','sedex'].includes(b.shipping)||b.cart.some(i=>!COLORS.includes(i.color)||![34,36,38,40,42,44,46].includes(i.size)||!Number.isInteger(i.qty)||i.qty<1||i.qty>20))return json(res,400,{error:'Revise os itens e o frete da sacola.'});
  const address=b.address;if(!address||!/^\d{8}$/.test(String(address.cep||'').replace(/\D/g,''))||['address','number','district','city','state'].some(k=>typeof address[k]!=='string'||!address[k].trim()||address[k].length>200))return json(res,400,{error:'Confira o endereço de entrega.'});
