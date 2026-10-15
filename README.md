@@ -1,6 +1,6 @@
 # Veloura
 
-Loja Veloura com a Calça Pool Jeans barrel por R$59,90, cinco cores, avaliações e checkout Pix UrusPay.
+Loja Veloura com a Calça Pool Jeans barrel por R$69,90, cinco cores, avaliações e checkout Pix UrusPay.
 
 ## Vercel
 
