@@ -35,6 +35,14 @@
     {
       "source": "/kit/",
       "destination": "/kit/index.html"
+    },
+    {
+      "source": "/calca",
+      "destination": "/calca/index.html"
+    },
+    {
+      "source": "/calca/",
+      "destination": "/calca/index.html"
     }
   ]
 }
