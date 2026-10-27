@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 664" width="760" height="664" role="img" aria-labelledby="title desc">
+<title id="title">Medidas corporais — calças jeans femininas</title>
+<desc id="desc">Tabela com tamanho, comprimento, cintura e quadril em centímetros, do 36 ao 46.</desc>
+<defs><clipPath id="round"><rect width="760" height="664" rx="15"/></clipPath></defs>
+<g clip-path="url(#round)">
+<rect x="0" y="0" width="760" height="664" fill="#fff"/>
+<rect x="0" y="0" width="760" height="73" fill="#3c3c3c"/>
+<rect x="0" y="73" width="760" height="85" fill="#050505"/>
+<text x="380" y="52" fill="white" font-family="Arial,Helvetica,sans-serif" font-size="31" font-weight="700" text-anchor="middle">Medidas corporais</text>
+<g fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="700" text-anchor="middle">
+<text x="78" y="126">Tamanho</text>
+<text x="255" y="111">Compriment<tspan x="255" dy="30">o</tspan></text>
+<text x="456" y="126">Cintura</text>
+<text x="658" y="126">Quadril</text></g>
+<rect x="0" y="158.0" width="760" height="84.3" fill="#ffffff"/>
+<rect x="0" y="242.3" width="760" height="84.3" fill="#f6f6f6"/>
+<rect x="0" y="326.6" width="760" height="84.3" fill="#ffffff"/>
+<rect x="0" y="410.9" width="760" height="84.3" fill="#f6f6f6"/>
+<rect x="0" y="495.2" width="760" height="84.3" fill="#ffffff"/>
+<rect x="0" y="579.5" width="760" height="84.3" fill="#f6f6f6"/>
+<g stroke="#d2d2d2" stroke-width="1"><line x1="155" y1="73" x2="155" y2="664"/><line x1="356" y1="73" x2="356" y2="664"/><line x1="557" y1="73" x2="557" y2="664"/></g>
+<g fill="#111111" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="400" text-anchor="middle">
+<text x="77.5" y="209.5">36</text>
+<text x="255.5" y="209.5">100.0</text>
+<text x="456.5" y="209.5">62.0-64.0</text>
+<text x="658.5" y="209.5">82.0-84.0</text>
+<text x="77.5" y="293.8">38</text>
+<text x="255.5" y="293.8">100.0</text>
+<text x="456.5" y="293.8">64.0-66.0</text>
+<text x="658.5" y="293.8">84.0-88.0</text>
+<text x="77.5" y="378.1">40</text>
+<text x="255.5" y="378.1">101.0</text>
+<text x="456.5" y="378.1">66.0-68.0</text>
+<text x="658.5" y="378.1">88.0-92.0</text>
+<text x="77.5" y="462.4">42</text>
+<text x="255.5" y="462.4">101.0</text>
+<text x="456.5" y="462.4">68.0-70.0</text>
+<text x="658.5" y="462.4">92.0-96.0</text>
+<text x="77.5" y="546.7">44</text>
+<text x="255.5" y="546.7">103.0</text>
+<text x="456.5" y="546.7">70.0-72.0</text>
+<text x="658.5" y="546.7">96.0-100.0</text>
+<text x="77.5" y="631">46</text>
+<text x="255.5" y="631">103.0</text>
+<text x="456.5" y="631">72.0-74.0</text>
+<text x="658.5" y="631">100.0-104.0</text></g></g><rect x=".5" y=".5" width="759" height="663" rx="14.5" fill="none" stroke="#dddddd"/></svg>
