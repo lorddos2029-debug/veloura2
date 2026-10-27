@@ -67,7 +67,7 @@ function createApp({root=__dirname,apiKey='',fetchImpl=fetch,dataDir=path.join(_
  }
  if(!['GET','HEAD'].includes(req.method)){res.writeHead(405);return res.end()}
  let file=path.resolve(root,'.'+pathname);if((!file.startsWith(root+path.sep)&&file!==root)||pathname.split('/').some(s=>s.startsWith('.'))){res.writeHead(403);return res.end('Forbidden')}
- if(pathname.endsWith('/')||!path.extname(pathname))file=path.join(file,'index.html');const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml'};if(!types[path.extname(file)]||file.endsWith('server.cjs')){res.writeHead(404);return res.end('Not found')}
+ if(pathname.endsWith('/')||!path.extname(pathname))file=path.join(file,'index.html');const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml'};if(!types[path.extname(file)]||file.endsWith('server.cjs')){res.writeHead(404);return res.end('Not found')}
  fs.readFile(file,(err,data)=>{if(err){res.writeHead(404);return res.end('Not found')}res.writeHead(200,{'Content-Type':types[path.extname(file)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(req.method==='HEAD'?undefined:data)});
  }catch{if(!res.headersSent)json(res,500,{error:'Não foi possível processar a solicitação. Tente novamente mais tarde.'});else res.end()}})
 }
