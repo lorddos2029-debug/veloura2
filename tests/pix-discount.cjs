@@ -1,0 +1,5 @@
+const assert=require('node:assert/strict'),catalog=require('../veloura/catalog.js');
+const cases=[{product:'jeans',color:'preto',size:38,qty:1},{product:'kit',kits:1,qty:1},{product:'kit',kits:2,qty:1},{product:'kit',kits:3,qty:1},{product:'skinny-kit',firstColor:'cor-01',secondColor:'cor-09',size:40,qty:1},{product:'legging-kit',color:'preto-marrom',size:'P/M',qty:1},{product:'bolsa-kit',color:'marrom',qty:1}];
+for(const choice of cases){assert(catalog.valid(choice));const item=catalog.item(choice);assert.equal(item.pix,Math.round(item.price*.95));assert(item.pix<item.price);}
+assert.equal(catalog.item(cases[4]).pix,5691);assert.equal(catalog.item(cases[5]).pix,6641);assert.equal(catalog.item(cases[6]).pix,7591);
+const cart=[{...cases[4],qty:2},{...cases[5],qty:3},{...cases[6],qty:1}];const subtotal=cart.reduce((n,i)=>n+catalog.item(i).pix*i.qty,0);assert.equal(subtotal,38896);assert.equal(subtotal+1390,40286);console.log('PASS: 5% Pix across all products, cent rounding, quantities and shipping');

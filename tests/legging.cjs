@@ -7,7 +7,7 @@ for(const color of ['preto-marrom','preto-azul','preto-preto','marrom-marrom','m
   const choice={product:'legging-kit',color,size,qty:1};
   assert(catalog.valid(choice));
   const item=catalog.item(choice);
-  assert.equal(item.price,6990);assert.equal(item.pix,6990);
+  assert.equal(item.price,6990);assert.equal(item.pix,6641);
   assert(item.variant.includes(size));
   assert(fs.existsSync(path.join(__dirname,'..',item.image)));
  }
