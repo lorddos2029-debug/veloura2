@@ -43,6 +43,14 @@
     {
       "source": "/calca/",
       "destination": "/calca/index.html"
+    },
+    {
+      "source": "/legging",
+      "destination": "/legging/index.html"
+    },
+    {
+      "source": "/legging/",
+      "destination": "/legging/index.html"
     }
   ]
 }

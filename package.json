@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.cjs",
     "check": "node --check server.cjs && node --check veloura/store.js && node --check veloura/checkout.js",
-    "test": "node tests/tracking.cjs"
+    "test": "node tests/tracking.cjs && node tests/legging.cjs"
   },
   "engines": {
     "node": ">=18"
