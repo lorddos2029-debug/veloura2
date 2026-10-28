@@ -1,1 +1,17 @@
-.productInfo h1{font-size:clamp(24px,2.4vw,36px);line-height:1.2}.swatches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.swatches .swatch{width:100%;height:auto;border-radius:6px;padding:4px;aspect-ratio:1;overflow:hidden}.swatches .swatch img{display:block;width:100%;height:100%;object-fit:contain;border-radius:3px}.swatches .swatch[aria-checked=true]{border:2px solid var(--accent,#71172e)}.photo>img{object-fit:contain;background:#e4e6e8}.colorCards{grid-template-columns:repeat(5,minmax(0,1fr))}#sizes button{min-width:75px}@media(max-width:750px){.colorCards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.productInfo h1{font-size:clamp(24px,2.4vw,36px);line-height:1.2}
+.swatches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0 28px;align-items:stretch}
+.swatches .swatch{position:relative;display:flex;flex-direction:column;width:100%;height:auto;min-width:0;padding:5px;border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden;transition:border-color .15s,box-shadow .15s;text-align:center}
+.swatches .swatch img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;background:#e4e6e8;border-radius:5px}
+.swatches .swatch .kitColorLabel{display:flex;align-items:center;justify-content:center;width:100%;height:auto;min-height:44px;padding:8px 3px;border:0;border-radius:0;font-size:11px;font-weight:500;line-height:1.35;color:var(--ink)}
+.swatches .swatch .kitColorCheck{position:absolute;top:11px;right:11px;display:grid;place-items:center;width:21px;height:21px;border:0;border-radius:50%;background:#71172e;color:white;font-size:12px;opacity:0}
+.swatches .swatch:hover{border-color:#71172e}
+.swatches .swatch[aria-checked=true]{border-color:#71172e;box-shadow:0 0 0 1px #71172e;background:#fcf5f6}
+.swatches .swatch[aria-checked=true] .kitColorLabel{color:#71172e;font-weight:600}
+.swatches .swatch[aria-checked=true] .kitColorCheck{opacity:1}
+.swatches .swatch:focus-visible{outline:2px solid #71172e;outline-offset:3px}
+.photo>img{object-fit:contain;background:#e4e6e8}
+.colorCards{grid-template-columns:repeat(5,minmax(0,1fr))}
+#sizes button{min-width:75px}
+.gallery .thumbs{max-height:650px;overflow:auto;flex-shrink:0}
+.gallery .thumbs button{flex-shrink:0}
+@media(max-width:750px){.swatches{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.swatches .swatch .kitColorLabel{font-size:12px;min-height:40px}.colorCards{grid-template-columns:repeat(2,minmax(0,1fr))}.gallery .thumbs{max-height:none}}
