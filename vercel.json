@@ -51,6 +51,14 @@
     {
       "source": "/legging/",
       "destination": "/legging/index.html"
+    },
+    {
+      "source": "/bolsa",
+      "destination": "/bolsa/index.html"
+    },
+    {
+      "source": "/bolsa/",
+      "destination": "/bolsa/index.html"
     }
   ]
 }
