@@ -15,3 +15,5 @@
 .gallery .thumbs{max-height:650px;overflow:auto;flex-shrink:0}
 .gallery .thumbs button{flex-shrink:0}
 @media(max-width:750px){.swatches{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.swatches .swatch .kitColorLabel{font-size:12px;min-height:40px}.colorCards{grid-template-columns:repeat(2,minmax(0,1fr))}.gallery .thumbs{max-height:none}}
+/* Seletor compacto para telas de celular. */
+@media(max-width:750px){.swatches{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 22px}.swatches .swatch{padding:3px;border-radius:6px}.swatches .swatch img{border-radius:3px}.swatches .swatch .kitColorLabel{min-height:34px;padding:5px 1px;font-size:10px;line-height:1.2}.swatches .swatch .kitColorCheck{top:7px;right:7px;width:17px;height:17px;font-size:10px}}
