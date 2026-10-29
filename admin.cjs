@@ -1,7 +1,7 @@
 const crypto=require('node:crypto'),{promisify}=require('node:util');const scrypt=promisify(crypto.scrypt);
 const COOKIE='veloura_admin';
 async function readBody(req){let body=req.body;if(body===undefined){let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>2048)throw Error('BODY_LIMIT')}body=raw}if(Buffer.isBuffer(body))body=body.toString('utf8');if(typeof body==='string')body=JSON.parse(body);if(!body||Array.isArray(body)||typeof body!=='object'||Buffer.byteLength(JSON.stringify(body))>2048)throw Error('BODY');return body;}
-function createAdmin({store,cloud,passwordHash=process.env.ADMIN_PASSWORD_HASH||'',configured,testProvider}){
+function createAdmin({store,cloud,passwordHash=process.env.ADMIN_PASSWORD_HASH||'',configured,testProvider,syncTracking}){
  const json=(res,status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data))};
  const digest=s=>crypto.createHash('sha256').update(s).digest('hex');
  const cookie=(res,value,age)=>res.setHeader('Set-Cookie',`${COOKIE}=${value}; HttpOnly; SameSite=Strict; Path=/api/admin; Max-Age=${age}${cloud?'; Secure':''}`);
@@ -21,6 +21,7 @@ function createAdmin({store,cloud,passwordHash=process.env.ADMIN_PASSWORD_HASH||
  if(pathname==='/api/admin/settings'&&req.method==='GET'){json(res,200,await state(current.csrf));return true}
  if(pathname==='/api/admin/settings'&&req.method==='POST'){const b=await readBody(req);if(!['uruspay','pinpay'].includes(b.provider)||!configured()[b.provider]){json(res,400,{error:'Selecione uma adquirente configurada.'});return true}const previous=await getProvider();await store.write('payment-provider',{provider:b.provider,previous,updatedAt:new Date().toISOString()});json(res,200,await state(current.csrf));return true}
  if(pathname==='/api/admin/test'&&req.method==='POST'){const b=await readBody(req);if(b.provider!=='pinpay'){json(res,400,{error:'Selecione PinPay para testar a conexão.'});return true}await testProvider('pinpay');json(res,200,{ok:true,message:'Conexão PinPay validada. Nenhuma cobrança foi criada.'});return true}
+ if(pathname==='/api/admin/sync-tracking'&&req.method==='POST'){const b=await readBody(req);if(typeof b.transactionId!=='string'||! /^[a-zA-Z0-9_-]{8,100}$/.test(b.transactionId)){json(res,400,{error:'Identificador inválido.'});return true}json(res,200,{ok:true,...await syncTracking(b.transactionId)});return true}
  if(pathname==='/api/admin/logout'&&req.method==='POST'){await store.write(current.key,{expires:0});cookie(res,'',0);json(res,200,{ok:true});return true}json(res,404,{error:'Rota não encontrada.'});return true
  }catch(e){json(res,e.message==='BODY'||e.message==='BODY_LIMIT'||e instanceof SyntaxError?400:503,{error:'Não foi possível concluir a operação. Tente novamente.'});return true}}
  };

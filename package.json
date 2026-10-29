@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.cjs",
     "check": "node --check server.cjs && node --check veloura/store.js && node --check veloura/checkout.js && node --check admin.cjs && node --check pinpay.cjs && node --check settings-store.cjs && node --check painel/app.js",
-    "test": "node tests/tracking.cjs && node tests/legging.cjs && node tests/bolsa.cjs && node tests/pix-discount.cjs && node tests/payments-panel.cjs && node tests/pinpay-errors.cjs"
+    "test": "node tests/tracking.cjs && node tests/legging.cjs && node tests/bolsa.cjs && node tests/pix-discount.cjs && node tests/payments-panel.cjs && node tests/pinpay-errors.cjs && node tests/tracking-recovery.cjs"
   },
   "engines": {
     "node": ">=18"
