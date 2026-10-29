@@ -1,0 +1,7 @@
+const fs=require('node:fs/promises'),path=require('node:path');
+function createSettingsStore({dataDir,cloud,blobStore=process.env.BLOB_STORE_ID,blobToken=process.env.BLOB_READ_WRITE_TOKEN}={}){
+ const blob=()=>require('@vercel/blob');
+ const available=!cloud||!!(blobStore||blobToken);
+ return {available,async read(key){if(!/^[a-z0-9/_-]+$/.test(key))throw Error('STORE_KEY');if(cloud){if(!available)throw Error('STORE_UNAVAILABLE');const result=await blob().get('admin/'+key+'.json',{access:'private',useCache:false,...(blobStore?{storeId:blobStore}:{})});if(!result)return null;if(result.statusCode!==200)throw Error('STORE_READ');return {data:JSON.parse(await new Response(result.stream).text()),etag:result.blob.etag};}try{return {data:JSON.parse(await fs.readFile(path.join(dataDir,'admin',key+'.json'),'utf8'))}}catch(e){if(e.code==='ENOENT')return null;throw e}},async write(key,data,etag){if(!/^[a-z0-9/_-]+$/.test(key))throw Error('STORE_KEY');if(cloud){if(!available)throw Error('STORE_UNAVAILABLE');await blob().put('admin/'+key+'.json',JSON.stringify(data),{access:'private',addRandomSuffix:false,allowOverwrite:true,contentType:'application/json',...(etag?{ifMatch:etag}:{}),...(blobStore?{storeId:blobStore}:{})});return;}const file=path.join(dataDir,'admin',key+'.json');await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,JSON.stringify(data),{mode:0o600})}};
+}
+module.exports={createSettingsStore};

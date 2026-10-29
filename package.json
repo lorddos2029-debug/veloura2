@@ -5,13 +5,17 @@
   "description": "Loja Veloura — calça Pool Jeans barrel",
   "scripts": {
     "start": "node server.cjs",
-    "check": "node --check server.cjs && node --check veloura/store.js && node --check veloura/checkout.js",
-    "test": "node tests/tracking.cjs && node tests/legging.cjs && node tests/bolsa.cjs && node tests/pix-discount.cjs"
+    "check": "node --check server.cjs && node --check veloura/store.js && node --check veloura/checkout.js && node --check admin.cjs && node --check pinpay.cjs && node --check settings-store.cjs && node --check painel/app.js",
+    "test": "node tests/tracking.cjs && node tests/legging.cjs && node tests/bolsa.cjs && node tests/pix-discount.cjs && node tests/payments-panel.cjs"
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
+    "@vercel/blob": "^2.8.2",
     "qrcode": "^1.5.4"
+  },
+  "overrides": {
+    "zod": "^4.6.6"
   }
 }
