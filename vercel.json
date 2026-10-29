@@ -71,6 +71,14 @@
     {
       "source": "/painel/",
       "destination": "/painel/index.html"
+    },
+    {
+      "source": "/escova",
+      "destination": "/escova/index.html"
+    },
+    {
+      "source": "/escova/",
+      "destination": "/escova/index.html"
     }
   ],
   "headers": [
