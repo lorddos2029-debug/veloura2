@@ -7,8 +7,8 @@ function createAdmin({store,cloud,passwordHash=process.env.ADMIN_PASSWORD_HASH||
  const cookie=(res,value,age)=>res.setHeader('Set-Cookie',`${COOKIE}=${value}; HttpOnly; SameSite=Strict; Path=/api/admin; Max-Age=${age}${cloud?'; Secure':''}`);
  const getProvider=async()=>{const saved=await store.read('payment-provider');if(!saved)return 'uruspay';if(!['uruspay','pinpay'].includes(saved.data.provider))throw Error('INVALID_PROVIDER');return saved.data.provider};
  const session=async req=>{const raw=String(req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith(COOKIE+'='))?.slice(COOKIE.length+1)||'';if(!/^[a-f0-9]{64}$/.test(raw))return null;const key='sessions/'+digest(raw),saved=await store.read(key);if(!saved||saved.data.expires<Date.now())return null;return {...saved.data,key}};
- const state=async csrf=>({provider:await getProvider(),csrf,providers:configured(),updatedAt:(await store.read('payment-provider'))?.data.updatedAt||null});
- return {getProvider,async handle(req,res,pathname){if(!pathname.startsWith('/api/admin/'))return false;
+ const state=async csrf=>({provider:await getProvider(),csrf,providers:configured(),updatedAt:(await store.read('payment-provider'))?.data.updatedAt||null,lastFailure:(await store.read('pix-last-failure'))?.data||null});
+ return {getProvider,async recordFailure(provider,error){await store.write('pix-last-failure',{provider,code:error.code||'PIX_INTERNAL',http:error.status||null,providerCode:error.providerCode||null,reason:error.reason||null,at:new Date().toISOString()})},async handle(req,res,pathname){if(!pathname.startsWith('/api/admin/'))return false;
  try{if(!passwordHash||!store.available){json(res,503,{error:'O painel ainda não foi configurado no servidor.'});return true}
  if(!['GET','POST'].includes(req.method)){json(res,405,{error:'Método não permitido.'});return true}
  if(req.method==='POST'){const origin=req.headers.origin;if(!origin||(new URL(origin)).host!==req.headers.host||!['http:','https:'].includes(new URL(origin).protocol)){json(res,403,{error:'Origem não permitida.'});return true}}
